@@ -32,10 +32,12 @@ function takePicture(){
 //-- Addition: This function receives the new image name and applies it to html element.
 
 socket.on('newPicture', function(msg) {
+  console.log("newPicture")
   document.getElementById('pictureContainer').src=msg;
 });
 
 socket.on('newAscii', function(msg) {
+  console.log("newAscii")
   document.getElementById('asciiContainer').textContent=msg;
 });
 
