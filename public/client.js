@@ -38,8 +38,7 @@ socket.on('newPicture', function(msg) {
 
 socket.on('newAscii', function(msg) {
   console.log("newAscii")
-  document.body.style.backgroundColor = "white";
-  document.getElementById('asciiContainer').textContent = 'Hello World!';
+  document.getElementById('asciiContainer').textContent = msg;
 });
 
 // read the data from the message that the server sent and change the
