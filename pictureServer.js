@@ -27,8 +27,9 @@ var serverPort = 8000;
 var SerialPort = require('serialport'); // serial library
 var Readline = SerialPort.parsers.Readline; // read serial data as lines
 
-var NodeWebcam = require( "node-webcam" );// load the webcam module
-var asciify = require('asciify-image');// load the asciify image module
+var NodeWebcam = require( "node-webcam" ); // load the webcam module
+var asciify = require('asciify-image'); // load the asciify image module
+var ansi_up = require('ansi_up'); // load the ansi_up module
 
 //---------------------- WEBAPP SERVER SETUP ---------------------------------//
 // use express to create the simple webapp
@@ -74,6 +75,8 @@ var Webcam = NodeWebcam.create( webcamOptions ); //starting up the webcam
 //----------------------------------------------------------------------------//
 
 //----------------------------ASCIIFY SETUP-----------------------------------//
+var ansi_up_default = new ansi_up.default;
+
 var asciifyOptions = { //These Options define how the asciify library is operated.
   //Picture related
   fit: 'box',
@@ -151,7 +154,7 @@ function takePicture() {
       }
       else {
         console.log(asciified);
-        io.emit('newAscii', asciified); /// Asciified image text is send to the client web browser.
+        io.emit('newAscii', ansi_up_default.ansi_to_html(asciified)); /// Asciified image text is send to the client web browser.
       }
     });
 

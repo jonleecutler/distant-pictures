@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/FAR-Lab/distant-pictures#readme",
   "dependencies": {
+    "ansi_up": "^2.0.2",
     "asciify-image": "^0.1.1",
     "express": "^4.16.2",
     "node-webcam": "^0.4.3",
