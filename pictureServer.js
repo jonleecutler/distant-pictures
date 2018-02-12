@@ -135,9 +135,9 @@ function takePicture() {
   /// The .replace() function removes all special characters from the date.
   /// This way we can use it as the filename.
   var imageName = new Date().toString().replace(/[&\/\\#,+()$~%.'":*?<>{}\s-]/g, '');
-  var imagePath = 'public/' + imageName;
+  var imagePath = __dirname + '/public/' + imageName;
 
-  console.log('making a making a picture at' + imageName); // Second, the name is logged to the console.
+  console.log('making a making a picture at ' + imageName); // Second, the name is logged to the console.
 
   // Third, the picture is taken and saved to the 'public/' folder
   NodeWebcam.capture(imagePath, webcamOptions, function( err, data ) {
