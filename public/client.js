@@ -38,7 +38,7 @@ socket.on('newPicture', function(msg) {
 
 socket.on('newAscii', function(msg) {
   console.log("newAscii")
-  document.getElementById('asciiContainer').textContent=msg;
+  document.getElementById('asciiContainer').textContent = msg;
 });
 
 // read the data from the message that the server sent and change the
