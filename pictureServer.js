@@ -135,16 +135,17 @@ function takePicture() {
   /// The .replace() function removes all special characters from the date.
   /// This way we can use it as the filename.
   var imageName = new Date().toString().replace(/[&\/\\#,+()$~%.'":*?<>{}\s-]/g, '');
-  var imagePath = __dirname + '/public/' + imageName;
+  var imagePath = 'public/' + imageName;
+  var imageLocation = __dirname + '/' + imagePath + '.jpg';
 
   console.log('making a making a picture at ' + imageName); // Second, the name is logged to the console.
 
   // Third, the picture is taken and saved to the 'public/' folder
   NodeWebcam.capture(imagePath, webcamOptions, function( err, data ) {
-    asciify(imagePath, asciifyOptions, function (err, asciified) {
+    asciify(imageLocation, asciifyOptions, function (err, asciified) {
       if (err) {
-        console.log(__dirname);
         console.log(imagePath);
+        console.log(imageLocation);
         // throw err; // Add better error handling on failure to asciify
       }
       else {
@@ -152,7 +153,7 @@ function takePicture() {
       }
     });
 
-    io.emit('newPicture',(imageName + '.jpg')); ///Lastly, the new name is send to the client web browser.
+    io.emit('newPicture',(imageName + '.jpg')); /// Lastly, the new name is send to the client web browser.
     /// The browser will take this new name and load the picture from the public folder.
 });
 
