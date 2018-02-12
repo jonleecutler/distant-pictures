@@ -38,6 +38,7 @@ socket.on('newPicture', function(msg) {
 
 socket.on('newAscii', function(msg) {
   console.log("newAscii")
+  document.body.style.backgroundColor = "white";
   document.getElementById('asciiContainer').textContent = 'Hello World!';
 });
 
