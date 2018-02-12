@@ -26,8 +26,9 @@ var io = require('socket.io')(http); // connect websocket library to server
 var serverPort = 8000;
 var SerialPort = require('serialport'); // serial library
 var Readline = SerialPort.parsers.Readline; // read serial data as lines
-//-- Addition:
+
 var NodeWebcam = require( "node-webcam" );// load the webcam module
+var asciify = require('asciify-image');// load the asciify image module
 
 //---------------------- WEBAPP SERVER SETUP ---------------------------------//
 // use express to create the simple webapp
@@ -46,35 +47,39 @@ http.listen(serverPort, function() {
 });
 //----------------------------------------------------------------------------//
 
-//--Additions:
 //----------------------------WEBCAM SETUP------------------------------------//
-//Default options
-var opts = { //These Options define how the webcam is operated.
-    //Picture related
-    width: 1280, //size
-    height: 720,
-    quality: 100,
-    //Delay to take shot
-    delay: 0,
-    //Save shots in memory
-    saveShots: true,
-    // [jpeg, png] support varies
-    // Webcam.OutputTypes
-    output: "jpeg",
-    //Which camera to use
-    //Use Webcam.list() for results
-    //false for default device
-    device: false,
-    // [location, buffer, base64]
-    // Webcam.CallbackReturnTypes
-    callbackReturn: "location",
-    //Logging
-    verbose: false
+var webcamOptions = { //These Options define how the webcam is operated.
+  //Picture related
+  width: 1280, //size
+  height: 720,
+  quality: 100,
+  //Delay to take shot
+  delay: 0,
+  //Save shots in memory
+  saveShots: true,
+  // [jpeg, png] support varies
+  // Webcam.OutputTypes
+  output: "jpeg",
+  //Which camera to use
+  //Use Webcam.list() for results
+  //false for default device
+  device: false,
+  // [location, buffer, base64]
+  // Webcam.CallbackReturnTypes
+  callbackReturn: "location",
+  //Logging
+  verbose: false
 };
-var Webcam = NodeWebcam.create( opts ); //starting up the webcam
+var Webcam = NodeWebcam.create( webcamOptions ); //starting up the webcam
 //----------------------------------------------------------------------------//
 
+//----------------------------ASCIIFY SETUP-----------------------------------//
+var asciifyOptions = { //These Options define how the asciify library is operated.
+  //Picture related
+  fit: 'original'
+}
 
+//----------------------------------------------------------------------------//
 
 //---------------------- SERIAL COMMUNICATION (Arduino) ----------------------//
 // start the serial port connection and read on newlines
@@ -95,7 +100,6 @@ parser.on('data', function(data) {
   // io.emit('server-msg', data);
 });
 //----------------------------------------------------------------------------//
-
 
 //---------------------- WEBSOCKET COMMUNICATION (web browser)----------------//
 // this is the websocket event handler and say if someone connects
@@ -131,13 +135,22 @@ function takePicture() {
   /// The .replace() function removes all special characters from the date.
   /// This way we can use it as the filename.
   var imageName = new Date().toString().replace(/[&\/\\#,+()$~%.'":*?<>{}\s-]/g, '');
+  var imagePath = 'public/' + imageName;
 
   console.log('making a making a picture at'+ imageName); // Second, the name is logged to the console.
 
-  //Third, the picture is  taken and saved to the `public/`` folder
-  NodeWebcam.capture('public/'+imageName, opts, function( err, data ) {
-  io.emit('newPicture',(imageName+'.jpg')); ///Lastly, the new name is send to the client web browser.
-  /// The browser will take this new name and load the picture from the public folder.
+  //Third, the picture is  taken and saved to the 'public/' folder
+  NodeWebcam.capture(imagePath, webcamOptions, function( err, data ) {
+    asciify(imagePath, asciifyOptions, function (err, asciified) {
+      if (err) {
+        throw err; // Add better error handling on failure to asciify
+      }
+
+      console.log(asciified);
+    });
+
+    io.emit('newPicture',(imageName+'.jpg')); ///Lastly, the new name is send to the client web browser.
+    /// The browser will take this new name and load the picture from the public folder.
 });
 
 }
