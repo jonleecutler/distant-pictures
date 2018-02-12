@@ -137,19 +137,22 @@ function takePicture() {
   var imageName = new Date().toString().replace(/[&\/\\#,+()$~%.'":*?<>{}\s-]/g, '');
   var imagePath = 'public/' + imageName;
 
-  console.log('making a making a picture at'+ imageName); // Second, the name is logged to the console.
+  console.log('making a making a picture at' + imageName); // Second, the name is logged to the console.
 
-  //Third, the picture is  taken and saved to the 'public/' folder
+  // Third, the picture is taken and saved to the 'public/' folder
   NodeWebcam.capture(imagePath, webcamOptions, function( err, data ) {
     asciify(imagePath, asciifyOptions, function (err, asciified) {
       if (err) {
-        throw err; // Add better error handling on failure to asciify
+        console.log(__dirname);
+        console.log(imagePath);
+        // throw err; // Add better error handling on failure to asciify
       }
-
-      console.log(asciified);
+      else {
+        console.log(asciified);
+      }
     });
 
-    io.emit('newPicture',(imageName+'.jpg')); ///Lastly, the new name is send to the client web browser.
+    io.emit('newPicture',(imageName + '.jpg')); ///Lastly, the new name is send to the client web browser.
     /// The browser will take this new name and load the picture from the public folder.
 });
 
