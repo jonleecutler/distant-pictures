@@ -34,6 +34,11 @@ function takePicture(){
 socket.on('newPicture', function(msg) {
   document.getElementById('pictureContainer').src=msg;
 });
+
+socket.on('newAscii', function(msg) {
+  document.getElementById('asciiContainer').textContent=msg;
+});
+
 // read the data from the message that the server sent and change the
 // background of the webpage based on the data in the message
 socket.on('server-msg', function(msg) {
