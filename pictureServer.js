@@ -146,16 +146,16 @@ function takePicture() {
   NodeWebcam.capture(imagePath, webcamOptions, function( err, data ) {
     asciify(imageLocation, asciifyOptions, function (err, asciified) {
       if (err) {
-        console.log(imagePath);
         console.log(imageLocation);
-        // throw err; // Add better error handling on failure to asciify
+        console.log(err); // Add better error handling on failure to asciify, for now noop
       }
       else {
         console.log(asciified);
+        io.emit('newAscii', asciified); /// Asciified image text is send to the client web browser.
       }
     });
 
-    io.emit('newPicture',(imageName + '.jpg')); /// Lastly, the new name is send to the client web browser.
+    io.emit('newPicture', (imageName + '.jpg')); /// Lastly, the new name is send to the client web browser.
     /// The browser will take this new name and load the picture from the public folder.
 });
 
