@@ -76,7 +76,9 @@ var Webcam = NodeWebcam.create( webcamOptions ); //starting up the webcam
 //----------------------------ASCIIFY SETUP-----------------------------------//
 var asciifyOptions = { //These Options define how the asciify library is operated.
   //Picture related
-  fit: 'original'
+  fit: 'box',
+  width: 200,
+  height: 100
 }
 
 //----------------------------------------------------------------------------//
