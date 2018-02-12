@@ -80,8 +80,8 @@ var ansi_up_default = new ansi_up.default;
 var asciifyOptions = { //These Options define how the asciify library is operated.
   //Picture related
   fit: 'box',
-  width: 42,
-  height: 42
+  width: 41,
+  height: 41
 }
 
 //----------------------------------------------------------------------------//
